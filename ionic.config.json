@@ -1,0 +1,7 @@
+{
+  "name": "wordstrenager",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
