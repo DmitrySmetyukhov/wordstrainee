@@ -1,0 +1,16 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 22px);
+  margin: 10px;
+
+  &__category-select {
+    width: 100%;
+  }
+
+  &__words-block {
+    width: 100%;
+  }
+}
