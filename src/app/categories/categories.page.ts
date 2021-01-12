@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Category, DataService} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
 import {ActionSheetController} from '@ionic/angular';
@@ -7,7 +7,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 @Component({
     selector: 'app-categories',
     templateUrl: './categories.page.html',
-    styleUrls: ['./categories.page.scss'],
+    styleUrls: ['./categories.page.scss']
 })
 export class CategoriesPage implements OnInit, OnDestroy {
     categories: Category[] = [];
