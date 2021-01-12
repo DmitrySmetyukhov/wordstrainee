@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {DataService} from '../shared/services/data.service';
 
 @Component({
     selector: 'app-words',
@@ -9,7 +10,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 export class WordsPage {
     expanded = true;
 
-    constructor() {
+    constructor(private dataService: DataService) {
     }
 
     togglePanel() {
