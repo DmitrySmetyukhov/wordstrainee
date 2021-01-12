@@ -3,6 +3,18 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {BehaviorSubject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
+export interface Category {
+    id?: string;
+    name: string;
+}
+
+export interface Word {
+    id: string;
+    categoryId: string;
+    origin: string;
+    translation: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -39,7 +51,7 @@ export class DataService {
                         };
                     });
 
-                    this._words.next(transformedData);
+                    this._categories.next(transformedData);
                 })
             )
 
@@ -62,5 +74,9 @@ export class DataService {
                     return {...item};
                 });
             }));
+    }
+
+    public addCategory(category: Category) {
+        return this.firestore.collection('categories').add(category);
     }
 }
