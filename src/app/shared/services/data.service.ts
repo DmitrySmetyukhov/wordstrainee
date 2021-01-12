@@ -79,4 +79,8 @@ export class DataService {
     public addCategory(category: Category) {
         return this.firestore.collection('categories').add(category);
     }
+
+    public deleteCategory(id: string) {
+        return this.firestore.collection('categories').doc(id).delete();
+    }
 }

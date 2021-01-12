@@ -1,32 +1,33 @@
-<ion-header >
-  <ion-toolbar color="primary">
-    <ion-title>Categories</ion-title>
-  </ion-toolbar>
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Categories</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card class="categories">
-    <ion-item class="ion-padding-bottom">
-      <ion-input [(ngModel)]="categoryName"
-                 (ngModelChange)="onModelChange()"
-                 (keydown.enter)="addCategory()"
-      ></ion-input>
-      <ion-button (click)="addCategory()"
-                  [disabled]="addDisabled">
-        <ion-icon name="add"></ion-icon>
-      </ion-button>
-    </ion-item>
+    <ion-card class="categories">
+        <ion-item class="ion-padding-bottom" [formGroup]="form">
+            <ion-input formControlName="name"
+                       (keydown.enter)="addCategory()"
+            ></ion-input>
+            <ion-button (click)="addCategory()"
+                        [disabled]="addDisabled">
+                <ion-icon name="add"></ion-icon>
+            </ion-button>
+        </ion-item>
 
-    <ion-list class="ion-padding-top">
-      <ion-item *ngFor="let category of categories">
-        <ion-label>{{category.name}}</ion-label>
-        <ion-button color="secondary">
-          <ion-icon name="create"></ion-icon>
-        </ion-button>
-        <ion-button color="danger">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-list>
-  </ion-card>
+        <ion-list class="ion-padding-top">
+            <ion-item *ngFor="let category of categories">
+                <ion-label>{{category.name}}</ion-label>
+                <ion-button color="secondary">
+                    <ion-icon name="create"></ion-icon>
+                </ion-button>
+                <ion-button [disabled]="deletePending"
+                            (click)="presentActionSheet(category)"
+                            color="danger">
+                    <ion-icon name="trash"></ion-icon>
+                </ion-button>
+            </ion-item>
+        </ion-list>
+    </ion-card>
 </ion-content>
