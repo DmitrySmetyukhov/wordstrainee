@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {DataService} from '../shared/services/data.service';
+import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.page.html',
-  styleUrls: ['./categories.page.scss'],
+    selector: 'app-categories',
+    templateUrl: './categories.page.html',
+    styleUrls: ['./categories.page.scss'],
 })
-export class CategoriesPage implements OnInit {
+export class CategoriesPage implements OnInit, OnDestroy {
+    private _subscription = new Subscription();
 
-  constructor() { }
+    constructor(private dataService: DataService) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this._subscription.add(this.dataService.categories$.subscribe(
+            list => {
+                console.log(list, 'categories');
+            }
+        ));
+    }
+
+    ngOnDestroy(): void {
+        this._subscription.unsubscribe();
+    }
 
 }
