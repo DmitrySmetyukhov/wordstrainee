@@ -1,0 +1,19 @@
+.words {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 22px);
+  margin: 10px;
+}
+
+ion-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+ion-select {
+  width: 100%;
+
+  &.list-select {
+    margin-left: 20px;
+  }
+}

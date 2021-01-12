@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
-  selector: 'app-words',
-  templateUrl: './words.page.html',
-  styleUrls: ['./words.page.scss'],
+    selector: 'app-words',
+    templateUrl: './words.page.html',
+    styleUrls: ['./words.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WordsPage implements OnInit {
+export class WordsPage {
+    expanded = true;
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
-
+    togglePanel() {
+        this.expanded = !this.expanded;
+    }
 }

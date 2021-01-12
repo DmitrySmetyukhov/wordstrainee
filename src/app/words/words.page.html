@@ -1,9 +1,101 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Words</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-title>Words</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-card class="words">
+        <ion-card-title *ngIf="!expanded">
+            <ion-card>
+                <ion-item>
+                    <ion-input placeholder="Search"></ion-input>
+                    <ion-button
+                            (click)="togglePanel()"
+                            slot="end" color="light">
+                        <ion-icon name="expand" slot="start"></ion-icon>
+                    </ion-button>
+                </ion-item>
+            </ion-card>
+        </ion-card-title>
+        <ion-card-title *ngIf="expanded">
+            <ion-card>
+                <ion-item>
+                    <ion-input placeholder="Search"></ion-input>
+                    <ion-button (click)="togglePanel()"
+                                slot="end" color="light">
+                        <ion-icon name="contract" slot="start"></ion-icon>
+                    </ion-button>
+                </ion-item>
 
+                <ion-item>
+                    <ion-input placeholder="Origin (EN)"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input placeholder="Translation (RU)"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-select placeholder="Select category">
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="n64">Nintendo64</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="n64">Nintendo64</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item class="ion-padding-bottom">
+                    <ion-button slot="end" color="light">
+                        Cancel
+                    </ion-button>
+                    <ion-button slot="end">
+                        Save
+                    </ion-button>
+                </ion-item>
+            </ion-card>
+
+        </ion-card-title>
+
+
+        <ion-list class="ion-padding-top">
+            <ng-container *ngFor="let test of [1,1,1,1,1,1,1,1,1,1,1,1,1]">
+                <div class="ion-padding-horizontal">
+                    <ion-text>
+                        origin
+                    </ion-text>
+                </div>
+
+                <div class="ion-padding-horizontal">
+                    <ion-text>
+                        translation
+                    </ion-text>
+                </div>
+
+                <ion-item>
+                    <ion-button color="danger">
+                        <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                    <ion-button color="secondary">
+                        <ion-icon name="create"></ion-icon>
+                    </ion-button>
+
+                    <ion-select class="list-select" placeholder="Select category">
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="n64">Nintendo64</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="n64">Nintendo64</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                        <ion-select-option value="nes">NES</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ng-container>
+        </ion-list>
+    </ion-card>
 </ion-content>
