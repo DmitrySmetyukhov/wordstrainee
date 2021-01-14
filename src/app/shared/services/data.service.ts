@@ -80,6 +80,10 @@ export class DataService {
         return this.firestore.collection('categories').add(category);
     }
 
+    public updateCategory(id: string, update: Category) {
+        return this.firestore.collection('categories').doc(id).set(update);
+    }
+
     public deleteCategory(id: string) {
         return this.firestore.collection('categories').doc(id).delete();
     }

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
-import {Category} from '../../shared/services/data.service';
+import {Category, DataService} from '../../shared/services/data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -14,7 +14,8 @@ export class CategoryEditComponent implements OnInit {
 
     constructor(
         private _modalCtrl: ModalController,
-        private _fb: FormBuilder
+        private _fb: FormBuilder,
+        private _dataService: DataService
     ) {
     }
 
@@ -40,7 +41,12 @@ export class CategoryEditComponent implements OnInit {
         this._modalCtrl.dismiss();
     }
 
-    save() {
+    async save() {
+        await this._dataService.updateCategory(this.category.id, {
+            ...this.category,
+            ...this.form.value
+        });
 
+        this.dismiss();
     }
 }
