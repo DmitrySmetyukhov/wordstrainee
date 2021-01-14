@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>
+            <ion-label>Edit category</ion-label>
+        </ion-title>
+
+        <ion-button (click)="dismiss()" color="light" slot="end">
+            <ion-icon name="close"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [formGroup]="form">
+    <ion-card class="category-edit ion-padding-horizontal">
+
+        <ion-item class="ion-margin-bottom">
+            <ion-input formControlName="name"></ion-input>
+        </ion-item>
+
+        <ion-button (click)="save()"
+                    [disabled]="isDisabled"
+        > Save
+        </ion-button>
+
+        <ion-button (click)="dismiss()" color="medium">Cancel</ion-button>
+    </ion-card>
+
+</ion-content>
+

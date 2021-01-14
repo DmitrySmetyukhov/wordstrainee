@@ -19,7 +19,7 @@
         <ion-list class="ion-padding-top">
             <ion-item *ngFor="let category of categories">
                 <ion-label>{{category.name}}</ion-label>
-                <ion-button color="secondary">
+                <ion-button (click)="editCategory(category)" color="secondary">
                     <ion-icon name="create"></ion-icon>
                 </ion-button>
                 <ion-button [disabled]="deletePending"

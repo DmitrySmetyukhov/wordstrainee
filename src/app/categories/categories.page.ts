@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Category, DataService} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
-import {ActionSheetController} from '@ionic/angular';
+import {ActionSheetController, ModalController} from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CategoryEditComponent} from './category-edit/category-edit.component';
 
 @Component({
     selector: 'app-categories',
@@ -19,8 +20,9 @@ export class CategoriesPage implements OnInit, OnDestroy {
 
     constructor(
         private dataService: DataService,
-        public actionSheetController: ActionSheetController,
-        private fb: FormBuilder
+        private actionSheetController: ActionSheetController,
+        private fb: FormBuilder,
+        private modalCtrl: ModalController
     ) {
     }
 
@@ -95,5 +97,16 @@ export class CategoriesPage implements OnInit, OnDestroy {
                 }]
         });
         await actionSheet.present();
+    }
+
+    async editCategory(category: Category) {
+        const modal = await this.modalCtrl.create({
+            component: CategoryEditComponent,
+            componentProps: {
+                category
+            }
+        });
+
+        await modal.present();
     }
 }
