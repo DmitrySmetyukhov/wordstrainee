@@ -13,16 +13,19 @@
 <ion-content [formGroup]="form">
     <ion-card class="page-card edit-card ion-padding-horizontal">
 
+
         <ion-item class="ion-margin-bottom">
-            <ion-input formControlName="name"></ion-input>
+            <ion-input formControlName="name" placeholder="Enter category name"></ion-input>
         </ion-item>
 
-        <ion-button (click)="save()"
-                    [disabled]="isDisabled"
-        > Save
-        </ion-button>
-
-        <ion-button (click)="dismiss()" color="medium">Cancel</ion-button>
+        <ion-item>
+            <ion-button (click)="dismiss()" slot="end" color="light">Cancel</ion-button>
+            <ion-button (click)="save()"
+                        [disabled]="isDisabled"
+                        slot="end"
+            > Save
+            </ion-button>
+        </ion-item>
     </ion-card>
 
 </ion-content>

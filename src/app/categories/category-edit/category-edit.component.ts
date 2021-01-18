@@ -17,7 +17,7 @@ export class CategoryEditComponent implements OnInit {
         private _modalCtrl: ModalController,
         private _fb: FormBuilder,
         private _dataService: DataService,
-        public toastCtrl: ToastController
+        private _toastCtrl: ToastController
     ) {
     }
 
@@ -64,7 +64,7 @@ export class CategoryEditComponent implements OnInit {
     }
 
     async presentToast() {
-        const toast = await this.toastCtrl.create({
+        const toast = await this._toastCtrl.create({
             message: 'This category already exists!',
             position: 'bottom',
             color: 'danger',
