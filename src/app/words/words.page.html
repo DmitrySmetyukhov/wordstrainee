@@ -2,7 +2,7 @@
     <ion-toolbar color="primary">
         <ion-title>Words</ion-title>
 
-        <ion-button (click)="openEditWordModal()" slot="end" color="light">
+        <ion-button (click)="openEditWordModal()" slot="end" color="light" size="small">
             <ion-icon name="add"></ion-icon>
         </ion-button>
     </ion-toolbar>
@@ -10,21 +10,51 @@
 
 <ion-content>
     <ion-card class="page-card">
-        <ion-card-title *ngIf="!expanded">
+        <ion-card-title [formGroup]="filtersForm" class="filters">
             <ion-card>
                 <ion-item>
-                    <ion-input placeholder="Search"></ion-input>
-                    <ion-button
-                            (click)="togglePanel()"
-                            slot="end" color="light">
-                        <ion-icon name="expand"></ion-icon>
+                    <ion-label>Filters panel</ion-label>
+                    <ion-button (click)="togglePanel()"
+                                slot="end" color="light">
+                        <ion-icon *ngIf="!expanded" name="expand"></ion-icon>
+                        <ion-icon *ngIf="expanded" name="contract"></ion-icon>
                     </ion-button>
                 </ion-item>
+
+                <ng-container *ngIf="expanded">
+                    <ion-item>
+                        <ion-button *ngIf="!!search.value"
+                                    (click)="search.setValue('')"
+                                    color="light" slot="end">
+                            <ion-icon name="close" ></ion-icon>
+                        </ion-button>
+
+                        <ion-input formControlName="search" placeholder="Search"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-select formControlName="categoryId"
+                                    placeholder="Filter by category"
+                                    [interfaceOptions]="{header: 'Select category'}"
+                                    class="filters__select"
+                        >
+                            <ion-select-option value="">All categories</ion-select-option>
+                            <ion-select-option *ngFor="let category of categories"
+                                               [value]="category.id">{{category.name}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-button (click)="resetFilters()" slot="end">Reset filters</ion-button>
+                    </ion-item>
+                </ng-container>
+
+
             </ion-card>
         </ion-card-title>
 
         <ion-list class="ion-padding-top">
-            <ng-container *ngFor="let word of words">
+            <ng-container *ngFor="let word of filteredWords">
                 <div class="ion-padding-horizontal">
                     <ion-text>
                         {{word.origin}}

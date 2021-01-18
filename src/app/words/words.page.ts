@@ -3,6 +3,7 @@ import {Category, DataService, Word} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
 import {ActionSheetController, ModalController} from '@ionic/angular';
 import {WordEditComponent} from './word-edit/word-edit.component';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-words',
@@ -13,20 +14,33 @@ export class WordsPage implements OnInit, OnDestroy {
     expanded = true;
     categories: Category[];
     words: Word[] = [];
+    filteredWords: Word[] = [];
     pending = false;
     isCategoriesVisible = false;
+    filtersForm: FormGroup;
     private _subscription = new Subscription();
 
     constructor(
         private dataService: DataService,
         private actionSheetController: ActionSheetController,
-        private modalCtrl: ModalController
+        private modalCtrl: ModalController,
+        private _fb: FormBuilder
     ) {
     }
 
     ngOnInit(): void {
+        this.filtersForm = this._fb.group({
+            search: [''],
+            categoryId: [null]
+        });
+
+        this.filtersForm.valueChanges.subscribe(val => {
+            this._filterAction();
+        });
+
         this._subscription.add(this.dataService.words$.subscribe(wordsList => {
             this.words = wordsList;
+            this._filterAction();
         }));
 
         this._subscription.add(this.dataService.categories$.subscribe(
@@ -42,6 +56,14 @@ export class WordsPage implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this._subscription.unsubscribe();
+    }
+
+    get search() {
+        return this.filtersForm.get('search');
+    }
+
+    get categoryId() {
+        return this.filtersForm.get('categoryId');
     }
 
     togglePanel() {
@@ -92,5 +114,27 @@ export class WordsPage implements OnInit, OnDestroy {
         });
 
         await modal.present();
+    }
+
+    resetFilters() {
+        this.filtersForm.setValue({
+            search: '',
+            categoryId: ''
+        });
+    }
+
+    private _filterAction() {
+        this.filteredWords = this.words.filter(word => {
+            const query = this.search.value.trim().toLowerCase();
+            return word.origin.includes(query) || word.translation.includes(query);
+        });
+
+        this.filteredWords = this.filteredWords.filter(word => {
+            if (this.categoryId.value) {
+                return word.categoryId === this.categoryId.value;
+            }
+
+            return true;
+        });
     }
 }
