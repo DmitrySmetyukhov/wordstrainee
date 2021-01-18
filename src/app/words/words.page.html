@@ -45,7 +45,10 @@
                     </ion-item>
 
                     <ion-item>
-                        <ion-button (click)="resetFilters()" slot="end">Reset filters</ion-button>
+                        <ion-button (click)="resetFilters()" slot="end" color="light">
+                            <ion-icon name="close" slot="start"></ion-icon>
+                            Reset filters
+                        </ion-button>
                     </ion-item>
                 </ng-container>
 
@@ -57,12 +60,14 @@
             <ng-container *ngFor="let word of filteredWords">
                 <div class="ion-padding-horizontal">
                     <ion-text>
+                        <strong>Origin: </strong>
                         {{word.origin}}
                     </ion-text>
                 </div>
 
                 <div class="ion-padding-horizontal">
                     <ion-text>
+                        <strong>Translation: </strong>
                         {{word.translation}}
                     </ion-text>
                 </div>
@@ -81,6 +86,7 @@
                     </ion-button>
 
                     <ng-container *ngIf="isCategoriesVisible">
+                        <ion-text class="ion-padding-start">Category: </ion-text>
                         <ion-select [(ngModel)]="word.categoryId" (ngModelChange)="onCategoryChange(word)"
                                     class="list-select" placeholder="Select category">
                             <ion-select-option *ngFor="let category of categories"

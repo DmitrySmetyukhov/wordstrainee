@@ -13,12 +13,12 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 export class WordsPage implements OnInit, OnDestroy {
     expanded = true;
     categories: Category[];
-    words: Word[] = [];
     filteredWords: Word[] = [];
     pending = false;
     isCategoriesVisible = false;
     filtersForm: FormGroup;
     private _subscription = new Subscription();
+    private _words: Word[] = [];
 
     constructor(
         private dataService: DataService,
@@ -39,7 +39,7 @@ export class WordsPage implements OnInit, OnDestroy {
         });
 
         this._subscription.add(this.dataService.words$.subscribe(wordsList => {
-            this.words = wordsList;
+            this._words = wordsList;
             this._filterAction();
         }));
 
@@ -109,7 +109,8 @@ export class WordsPage implements OnInit, OnDestroy {
             component: WordEditComponent,
             componentProps: {
                 categories: this.categories,
-                word
+                word,
+                words: this._words
             }
         });
 
@@ -124,7 +125,7 @@ export class WordsPage implements OnInit, OnDestroy {
     }
 
     private _filterAction() {
-        this.filteredWords = this.words.filter(word => {
+        this.filteredWords = this._words.filter(word => {
             const query = this.search.value.trim().toLowerCase();
             return word.origin.includes(query) || word.translation.includes(query);
         });

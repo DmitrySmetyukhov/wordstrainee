@@ -34,7 +34,7 @@
                 <ion-button [disabled]="pending" (click)="dismiss()" slot="end" color="light">
                     Cancel
                 </ion-button>
-                <ion-button [disabled]="form.invalid || pending"
+                <ion-button [disabled]="form.invalid || pending || noChanges"
                             (click)="save()"
                             slot="end"
                 >

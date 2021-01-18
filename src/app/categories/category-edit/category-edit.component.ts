@@ -12,6 +12,7 @@ export class CategoryEditComponent implements OnInit {
     @Input() category: Category;
     @Input() categories: Category[];
     form: FormGroup;
+    pending = false;
 
     constructor(
         private _modalCtrl: ModalController,
@@ -36,7 +37,7 @@ export class CategoryEditComponent implements OnInit {
     }
 
     get isDisabled() {
-        return this.name.value === this.category?.name || this.form.invalid;
+        return this.name.value === this.category?.name || this.form.invalid || this.pending;
     }
 
     get name() {
@@ -49,8 +50,10 @@ export class CategoryEditComponent implements OnInit {
 
     async save() {
         if (this.categories.find(category => category.name === this.name.value)) {
-            return this.presentToast();
+            return this._presentToast();
         }
+
+        this.pending = true;
         if (this.category) {
             await this._dataService.updateCategory(this.category.id, {
                 ...this.category,
@@ -63,7 +66,7 @@ export class CategoryEditComponent implements OnInit {
         this.dismiss();
     }
 
-    async presentToast() {
+    private async _presentToast() {
         const toast = await this._toastCtrl.create({
             message: 'This category already exists!',
             position: 'bottom',
