@@ -68,7 +68,7 @@ export class CategoriesPage implements OnInit, OnDestroy {
         });
 
         this._pending = false;
-        this.form.setValue({name: ''});
+        this.form.reset();
     }
 
     async deleteCategory(id: string) {

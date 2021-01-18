@@ -1,4 +1,8 @@
-.categories{
+.categories {
   min-height: calc(100% - 22px);
   margin: 10px;
+}
+
+ion-item {
+  --highlight-background: none;
 }

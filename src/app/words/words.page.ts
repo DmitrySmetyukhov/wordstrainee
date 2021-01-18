@@ -1,24 +1,43 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {DataService} from '../shared/services/data.service';
+import {Category, DataService, Word} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-words',
     templateUrl: './words.page.html',
     styleUrls: ['./words.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WordsPage implements OnInit, OnDestroy {
     expanded = true;
+    categories: Category[];
+    words: Word[] = [];
+    form: FormGroup;
+    pending = false;
     private _subscription = new Subscription();
 
-    constructor(private dataService: DataService) {
+    constructor(
+        private dataService: DataService,
+        private fb: FormBuilder
+    ) {
     }
 
     ngOnInit(): void {
-        this._subscription.add(this.dataService.words$.subscribe(wordsList => [
-            console.log(wordsList, 'list')
-        ]));
+        this.form = this.fb.group({
+            origin: ['', [Validators.required, Validators.maxLength(200)]],
+            translation: ['', [Validators.required, Validators.maxLength(200)]],
+            categoryId: ['', [Validators.required]]
+        });
+        this._subscription.add(this.dataService.words$.subscribe(wordsList => {
+            this.words = wordsList;
+        }));
+
+        this._subscription.add(this.dataService.categories$.subscribe(
+            list => {
+                this.categories = list;
+            }
+        ));
     }
 
     ngOnDestroy(): void {
@@ -27,5 +46,11 @@ export class WordsPage implements OnInit, OnDestroy {
 
     togglePanel() {
         this.expanded = !this.expanded;
+    }
+
+    async addWord() {
+        this.pending = true;
+        await this.dataService.addWord(this.form.value);
+        this.pending = false;
     }
 }

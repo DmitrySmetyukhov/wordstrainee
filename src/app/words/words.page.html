@@ -19,7 +19,7 @@
             </ion-card>
         </ion-card-title>
         <ion-card-title *ngIf="expanded">
-            <ion-card>
+            <ion-card [formGroup]="form">
                 <ion-item>
                     <ion-input placeholder="Search"></ion-input>
                     <ion-button (click)="togglePanel()"
@@ -29,31 +29,27 @@
                 </ion-item>
 
                 <ion-item>
-                    <ion-input placeholder="Origin (EN)"></ion-input>
+                    <ion-input formControlName="origin" placeholder="Origin (EN)"></ion-input>
                 </ion-item>
 
                 <ion-item>
-                    <ion-input placeholder="Translation (RU)"></ion-input>
+                    <ion-input formControlName="translation" placeholder="Translation (RU)"></ion-input>
                 </ion-item>
 
                 <ion-item>
-                    <ion-select placeholder="Select category">
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="n64">Nintendo64</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="n64">Nintendo64</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
+                    <ion-select formControlName="categoryId" placeholder="Select category">
+                        <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
                     </ion-select>
                 </ion-item>
 
                 <ion-item>
-                    <ion-button slot="end" color="light">
+                    <ion-button [disabled]="pending" slot="end" color="light">
                         Cancel
                     </ion-button>
-                    <ion-button slot="end">
+                    <ion-button [disabled]="form.invalid || pending"
+                                (click)="addWord()"
+                                slot="end"
+                    >
                         Save
                     </ion-button>
                 </ion-item>
@@ -63,16 +59,16 @@
 
 
         <ion-list class="ion-padding-top">
-            <ng-container *ngFor="let test of [1,1,1,1,1,1,1,1,1,1,1,1,1]">
+            <ng-container *ngFor="let word of words">
                 <div class="ion-padding-horizontal">
                     <ion-text>
-                        origin
+                        {{word.origin}}
                     </ion-text>
                 </div>
 
                 <div class="ion-padding-horizontal">
                     <ion-text>
-                        translation
+                        {{word.translation}}
                     </ion-text>
                 </div>
 
@@ -84,16 +80,12 @@
                         <ion-icon name="create"></ion-icon>
                     </ion-button>
 
-                    <ion-select class="list-select" placeholder="Select category">
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="n64">Nintendo64</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="n64">Nintendo64</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                        <ion-select-option value="nes">NES</ion-select-option>
-                    </ion-select>
+                    <ng-container *ngIf="categories">
+                        <ion-select [(ngModel)]="word.categoryId"  class="list-select" placeholder="Select category">
+                            <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
+                        </ion-select>
+                    </ng-container>
+
                 </ion-item>
             </ng-container>
         </ion-list>

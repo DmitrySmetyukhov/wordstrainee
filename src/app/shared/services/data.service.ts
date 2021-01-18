@@ -87,4 +87,8 @@ export class DataService {
     public deleteCategory(id: string) {
         return this.firestore.collection('categories').doc(id).delete();
     }
+
+    public addWord(word: Word) {
+        return this.firestore.collection('words').add(word);
+    }
 }
