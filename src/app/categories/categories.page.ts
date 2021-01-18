@@ -99,7 +99,7 @@ export class CategoriesPage implements OnInit, OnDestroy {
         await actionSheet.present();
     }
 
-    async editCategory(category: Category) {
+    async openEditCategoryModal(category?: Category) {
         const modal = await this.modalCtrl.create({
             component: CategoryEditComponent,
             componentProps: {

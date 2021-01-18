@@ -1,6 +1,9 @@
 <ion-header>
     <ion-toolbar color="primary">
         <ion-title>Categories</ion-title>
+        <ion-button (click)="openEditCategoryModal()" slot="end" color="light" size="small">
+            <ion-icon name="add"></ion-icon>
+        </ion-button>
     </ion-toolbar>
 </ion-header>
 
@@ -19,7 +22,7 @@
         <ion-list class="ion-padding-top">
             <ion-item *ngFor="let category of categories">
                 <ion-label>{{category.name}}</ion-label>
-                <ion-button (click)="editCategory(category)" color="secondary">
+                <ion-button (click)="openEditCategoryModal(category)" color="secondary">
                     <ion-icon name="create"></ion-icon>
                 </ion-button>
                 <ion-button [disabled]="deletePending"

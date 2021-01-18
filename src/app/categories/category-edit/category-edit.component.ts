@@ -21,16 +21,20 @@ export class CategoryEditComponent implements OnInit {
 
     ngOnInit() {
         this.form = this._fb.group({
-            name: [this.category.name, [
+            name: ['', [
                 Validators.maxLength(30),
                 Validators.required,
                 Validators.minLength(3)
             ]]
         });
+
+        if (this.category) {
+            this.name.setValue(this.category.name);
+        }
     }
 
     get isDisabled() {
-        return this.name.value === this.category.name || this.form.invalid;
+        return this.name.value === this.category?.name || this.form.invalid;
     }
 
     get name() {
@@ -42,10 +46,14 @@ export class CategoryEditComponent implements OnInit {
     }
 
     async save() {
-        await this._dataService.updateCategory(this.category.id, {
-            ...this.category,
-            ...this.form.value
-        });
+        if (this.category) {
+            await this._dataService.updateCategory(this.category.id, {
+                ...this.category,
+                ...this.form.value
+            });
+        } else {
+            await this._dataService.addCategory(this.form.value);
+        }
 
         this.dismiss();
     }
