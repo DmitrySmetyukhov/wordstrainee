@@ -24,3 +24,15 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+ion-card {
+  min-height: calc(100% - 22px);
+  margin: 10px;
+}
+
+.edit-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

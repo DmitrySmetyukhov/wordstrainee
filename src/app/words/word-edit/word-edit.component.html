@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>
+            <ion-label>Create</ion-label>
+        </ion-title>
+
+        <ion-button (click)="dismiss()" color="light" slot="end">
+            <ion-icon name="close"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [formGroup]="form">
+    <ion-card class="edit-card">
+        <ion-card-title>
+            <ion-item>
+                <ion-input formControlName="origin" placeholder="Origin (EN)"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-input formControlName="translation" placeholder="Translation (RU)"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-select formControlName="categoryId" placeholder="Select category">
+                    <ion-select-option *ngFor="let category of categories"
+                                       [value]="category.id">{{category.name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-button [disabled]="pending" (click)="dismiss()" slot="end" color="light">
+                    Cancel
+                </ion-button>
+                <ion-button [disabled]="form.invalid || pending"
+                            (click)="createWord()"
+                            slot="end"
+                >
+                    Save
+                </ion-button>
+            </ion-item>
+        </ion-card-title>
+    </ion-card>
+</ion-content>

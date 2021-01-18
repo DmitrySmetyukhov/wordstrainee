@@ -7,6 +7,7 @@ import {IonicModule} from '@ionic/angular';
 import {WordsPageRoutingModule} from './words-routing.module';
 
 import {WordsPage} from './words.page';
+import {WordEditComponent} from './word-edit/word-edit.component';
 
 @NgModule({
     imports: [
@@ -16,7 +17,7 @@ import {WordsPage} from './words.page';
         WordsPageRoutingModule,
         ReactiveFormsModule
     ],
-    declarations: [WordsPage]
+    declarations: [WordsPage, WordEditComponent]
 })
 export class WordsPageModule {
 }

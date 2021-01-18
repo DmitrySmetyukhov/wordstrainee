@@ -1,6 +1,10 @@
 <ion-header>
     <ion-toolbar color="primary">
         <ion-title>Words</ion-title>
+
+        <ion-button (click)="openCreateWordModal()" slot="end" color="light">
+            <ion-icon name="add"></ion-icon>
+        </ion-button>
     </ion-toolbar>
 </ion-header>
 
@@ -18,45 +22,45 @@
                 </ion-item>
             </ion-card>
         </ion-card-title>
-        <ion-card-title *ngIf="expanded">
-            <ion-card [formGroup]="form">
-                <ion-item>
-                    <ion-input placeholder="Search"></ion-input>
-                    <ion-button (click)="togglePanel()"
-                                slot="end" color="light">
-                        <ion-icon name="contract"></ion-icon>
-                    </ion-button>
-                </ion-item>
+<!--        <ion-card-title *ngIf="expanded">-->
+<!--            <ion-card [formGroup]="form">-->
+<!--                <ion-item>-->
+<!--                    <ion-input placeholder="Search"></ion-input>-->
+<!--                    <ion-button (click)="togglePanel()"-->
+<!--                                slot="end" color="light">-->
+<!--                        <ion-icon name="contract"></ion-icon>-->
+<!--                    </ion-button>-->
+<!--                </ion-item>-->
 
-                <ion-item>
-                    <ion-input formControlName="origin" placeholder="Origin (EN)"></ion-input>
-                </ion-item>
+<!--                <ion-item>-->
+<!--                    <ion-input formControlName="origin" placeholder="Origin (EN)"></ion-input>-->
+<!--                </ion-item>-->
 
-                <ion-item>
-                    <ion-input formControlName="translation" placeholder="Translation (RU)"></ion-input>
-                </ion-item>
+<!--                <ion-item>-->
+<!--                    <ion-input formControlName="translation" placeholder="Translation (RU)"></ion-input>-->
+<!--                </ion-item>-->
 
-                <ion-item>
-                    <ion-select formControlName="categoryId" placeholder="Select category">
-                        <ion-select-option *ngFor="let category of categories"
-                                           [value]="category.id">{{category.name}}</ion-select-option>
-                    </ion-select>
-                </ion-item>
+<!--                <ion-item>-->
+<!--                    <ion-select formControlName="categoryId" placeholder="Select category">-->
+<!--                        <ion-select-option *ngFor="let category of categories"-->
+<!--                                           [value]="category.id">{{category.name}}</ion-select-option>-->
+<!--                    </ion-select>-->
+<!--                </ion-item>-->
 
-                <ion-item>
-                    <ion-button [disabled]="pending" slot="end" color="light">
-                        Cancel
-                    </ion-button>
-                    <ion-button [disabled]="form.invalid || pending"
-                                (click)="addWord()"
-                                slot="end"
-                    >
-                        Save
-                    </ion-button>
-                </ion-item>
-            </ion-card>
+<!--                <ion-item>-->
+<!--                    <ion-button [disabled]="pending" slot="end" color="light">-->
+<!--                        Cancel-->
+<!--                    </ion-button>-->
+<!--                    <ion-button [disabled]="form.invalid || pending"-->
+<!--                                (click)="addWord()"-->
+<!--                                slot="end"-->
+<!--                    >-->
+<!--                        Save-->
+<!--                    </ion-button>-->
+<!--                </ion-item>-->
+<!--            </ion-card>-->
 
-        </ion-card-title>
+<!--        </ion-card-title>-->
 
 
         <ion-list class="ion-padding-top">
