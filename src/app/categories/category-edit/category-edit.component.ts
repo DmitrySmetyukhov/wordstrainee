@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ModalController} from '@ionic/angular';
+import {ModalController, ToastController} from '@ionic/angular';
 import {Category, DataService} from '../../shared/services/data.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -10,12 +10,14 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class CategoryEditComponent implements OnInit {
     @Input() category: Category;
+    @Input() categories: Category[];
     form: FormGroup;
 
     constructor(
         private _modalCtrl: ModalController,
         private _fb: FormBuilder,
-        private _dataService: DataService
+        private _dataService: DataService,
+        public toastCtrl: ToastController
     ) {
     }
 
@@ -46,6 +48,9 @@ export class CategoryEditComponent implements OnInit {
     }
 
     async save() {
+        if (this.categories.find(category => category.name === this.name.value)) {
+            return this.presentToast();
+        }
         if (this.category) {
             await this._dataService.updateCategory(this.category.id, {
                 ...this.category,
@@ -56,5 +61,16 @@ export class CategoryEditComponent implements OnInit {
         }
 
         this.dismiss();
+    }
+
+    async presentToast() {
+        const toast = await this.toastCtrl.create({
+            message: 'This category already exists!',
+            position: 'bottom',
+            color: 'danger',
+            duration: 3000
+        });
+
+        toast.present();
     }
 }

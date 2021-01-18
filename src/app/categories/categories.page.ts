@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Category, DataService} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
 import {ActionSheetController, ModalController} from '@ionic/angular';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {CategoryEditComponent} from './category-edit/category-edit.component';
 
 @Component({
@@ -11,37 +11,31 @@ import {CategoryEditComponent} from './category-edit/category-edit.component';
     styleUrls: ['./categories.page.scss']
 })
 export class CategoriesPage implements OnInit, OnDestroy {
-    categories: Category[] = [];
-    deletePending = false;
-    form: FormGroup;
-    private _pending = false;
-    private _duplicate = false;
+    filtersForm: FormGroup;
+    pending = false;
+    filteredCategories: Category[];
     private _subscription = new Subscription();
+    private _categories: Category[];
 
     constructor(
+        private _fb: FormBuilder,
         private dataService: DataService,
         private actionSheetController: ActionSheetController,
-        private fb: FormBuilder,
         private modalCtrl: ModalController
     ) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({
-            name: ['', [
-                Validators.maxLength(30),
-                Validators.required,
-                Validators.minLength(3)
-            ]]
+        this.filtersForm = this._fb.group({
+            search: ['']
         });
 
-        this.form.valueChanges.subscribe(val => {
-            this._duplicate = !!this.categories.find(cat => cat.name === val.name);
-        });
+        this.filtersForm.valueChanges.subscribe(val => this._filterAction());
 
         this._subscription.add(this.dataService.categories$.subscribe(
             list => {
-                this.categories = list;
+                this._categories = list;
+                this._filterAction();
             }
         ));
     }
@@ -50,32 +44,15 @@ export class CategoriesPage implements OnInit, OnDestroy {
         this._subscription.unsubscribe();
     }
 
-    get name() {
-        return this.form.get('name');
-    }
-
-    get addDisabled() {
-        return this.form.invalid || this._pending || this._duplicate;
-    }
-
-    async addCategory() {
-        if (this.addDisabled) {
-            return;
-        }
-        this._pending = true;
-        await this.dataService.addCategory({
-            name: this.name.value
-        });
-
-        this._pending = false;
-        this.form.reset();
+    get search() {
+        return this.filtersForm.get('search');
     }
 
     async deleteCategory(id: string) {
-        this.deletePending = true;
+        this.pending = true;
         await this.dataService.deleteCategory(id);
 
-        this.deletePending = false;
+        this.pending = false;
     }
 
     async presentActionSheet(category: Category) {
@@ -103,10 +80,16 @@ export class CategoriesPage implements OnInit, OnDestroy {
         const modal = await this.modalCtrl.create({
             component: CategoryEditComponent,
             componentProps: {
-                category
+                category,
+                categories: this._categories
             }
         });
 
         await modal.present();
+    }
+
+    private _filterAction() {
+        this.filteredCategories = this._categories
+            .filter(category => category.name.includes(this.search.value.trim().toLowerCase()));
     }
 }

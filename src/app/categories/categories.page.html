@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar color="primary">
         <ion-title>Categories</ion-title>
-        <ion-button (click)="openEditCategoryModal()" slot="end" color="light" size="small">
+        <ion-button [disabled]="!filteredCategories || pending" (click)="openEditCategoryModal()" slot="end" color="light" size="small">
             <ion-icon name="add"></ion-icon>
         </ion-button>
     </ion-toolbar>
@@ -9,23 +9,24 @@
 
 <ion-content>
     <ion-card class="page-card">
-        <ion-item class="ion-padding-bottom" [formGroup]="form">
-            <ion-input formControlName="name"
-                       (keydown.enter)="addCategory()"
-            ></ion-input>
-            <ion-button (click)="addCategory()"
-                        [disabled]="addDisabled">
-                <ion-icon name="add"></ion-icon>
+        <ion-item class="ion-padding-bottom" [formGroup]="filtersForm">
+            <ion-button *ngIf="search.value"
+                        (click)="search.setValue('')"
+                        color="light" slot="end">
+                <ion-icon name="close" ></ion-icon>
             </ion-button>
+            <ion-input formControlName="search"
+                      placeholder="Search"
+            ></ion-input>
         </ion-item>
 
         <ion-list class="ion-padding-top">
-            <ion-item *ngFor="let category of categories">
+            <ion-item *ngFor="let category of filteredCategories">
                 <ion-label>{{category.name}}</ion-label>
                 <ion-button (click)="openEditCategoryModal(category)" color="secondary">
                     <ion-icon name="create"></ion-icon>
                 </ion-button>
-                <ion-button [disabled]="deletePending"
+                <ion-button [disabled]="pending"
                             (click)="presentActionSheet(category)"
                             color="danger">
                     <ion-icon name="trash"></ion-icon>
