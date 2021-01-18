@@ -91,4 +91,12 @@ export class DataService {
     public addWord(word: Word) {
         return this.firestore.collection('words').add(word);
     }
+
+    public deleteWord(id: string) {
+        return this.firestore.collection('words').doc(id).delete();
+    }
+
+    public updateWord(id: string, update: Word) {
+        return this.firestore.collection('words').doc(id).set(update);
+    }
 }

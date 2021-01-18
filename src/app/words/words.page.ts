@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Category, DataService, Word} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActionSheetController} from '@ionic/angular';
 
 @Component({
     selector: 'app-words',
@@ -19,7 +20,8 @@ export class WordsPage implements OnInit, OnDestroy {
 
     constructor(
         private dataService: DataService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private actionSheetController: ActionSheetController,
     ) {
     }
 
@@ -39,7 +41,7 @@ export class WordsPage implements OnInit, OnDestroy {
 
                 setTimeout(() => {
                     this.isCategoriesVisible = true;
-                }, 500);
+                }, 700);
             }
         ));
     }
@@ -57,5 +59,39 @@ export class WordsPage implements OnInit, OnDestroy {
         await this.dataService.addWord(this.form.value);
         this.pending = false;
         this.form.reset();
+    }
+
+    async presentActionSheet(word: Word) {
+        const actionSheet = await this.actionSheetController.create({
+            header: 'Confirm action:',
+            cssClass: 'my-custom-class',
+            buttons: [{
+                text: `Delete ${word.origin}`,
+                role: 'destructive',
+                icon: 'trash',
+                handler: () => {
+                    this.deleteWord(word.id);
+                }
+            },
+                {
+                    text: 'Cancel',
+                    icon: 'close',
+                    role: 'cancel'
+                }]
+        });
+        await actionSheet.present();
+    }
+
+    async deleteWord(id: string) {
+        this.pending = true;
+        await this.dataService.deleteWord(id);
+
+        this.pending = false;
+    }
+
+    async onCategoryChange(word: Word) {
+        this.pending = true;
+        await this.dataService.updateWord(word.id, word);
+        this.pending = false;
     }
 }

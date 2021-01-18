@@ -38,7 +38,8 @@
 
                 <ion-item>
                     <ion-select formControlName="categoryId" placeholder="Select category">
-                        <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
+                        <ion-select-option *ngFor="let category of categories"
+                                           [value]="category.id">{{category.name}}</ion-select-option>
                     </ion-select>
                 </ion-item>
 
@@ -73,16 +74,22 @@
                 </div>
 
                 <ion-item>
-                    <ion-button color="danger">
+                    <ion-button
+                            [disabled]="pending"
+                            (click)="presentActionSheet(word)" color="danger"
+                    >
                         <ion-icon name="trash"></ion-icon>
                     </ion-button>
-                    <ion-button color="secondary">
+                    <ion-button [disabled]="pending"
+                                color="secondary">
                         <ion-icon name="create"></ion-icon>
                     </ion-button>
 
                     <ng-container *ngIf="isCategoriesVisible">
-                        <ion-select [(ngModel)]="word.categoryId"  class="list-select" placeholder="Select category">
-                            <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
+                        <ion-select [(ngModel)]="word.categoryId" (ngModelChange)="onCategoryChange(word)"
+                                    class="list-select" placeholder="Select category">
+                            <ion-select-option *ngFor="let category of categories"
+                                               [value]="category.id">{{category.name}}</ion-select-option>
                         </ion-select>
                     </ng-container>
 
