@@ -21,9 +21,9 @@ export class WordsPage implements OnInit, OnDestroy {
     private _words: Word[] = [];
 
     constructor(
-        private dataService: DataService,
-        private actionSheetController: ActionSheetController,
-        private modalCtrl: ModalController,
+        private _dataService: DataService,
+        private _actionSheetController: ActionSheetController,
+        private _modalCtrl: ModalController,
         private _fb: FormBuilder
     ) {
     }
@@ -38,12 +38,12 @@ export class WordsPage implements OnInit, OnDestroy {
             this._filterAction();
         });
 
-        this._subscription.add(this.dataService.words$.subscribe(wordsList => {
+        this._subscription.add(this._dataService.words$.subscribe(wordsList => {
             this._words = wordsList;
             this._filterAction();
         }));
 
-        this._subscription.add(this.dataService.categories$.subscribe(
+        this._subscription.add(this._dataService.categories$.subscribe(
             list => {
                 this.categories = list;
 
@@ -71,7 +71,7 @@ export class WordsPage implements OnInit, OnDestroy {
     }
 
     async presentActionSheet(word: Word) {
-        const actionSheet = await this.actionSheetController.create({
+        const actionSheet = await this._actionSheetController.create({
             header: 'Confirm action:',
             cssClass: 'my-custom-class',
             buttons: [{
@@ -93,19 +93,19 @@ export class WordsPage implements OnInit, OnDestroy {
 
     async deleteWord(id: string) {
         this.pending = true;
-        await this.dataService.deleteWord(id);
+        await this._dataService.deleteWord(id);
 
         this.pending = false;
     }
 
     async onCategoryChange(word: Word) {
         this.pending = true;
-        await this.dataService.updateWord(word.id, word);
+        await this._dataService.updateWord(word.id, word);
         this.pending = false;
     }
 
     async openEditWordModal(word?: Word) {
-        const modal = await this.modalCtrl.create({
+        const modal = await this._modalCtrl.create({
             component: WordEditComponent,
             componentProps: {
                 categories: this.categories,
