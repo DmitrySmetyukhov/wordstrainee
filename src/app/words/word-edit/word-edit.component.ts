@@ -27,17 +27,24 @@ export class WordEditComponent implements OnInit {
             translation: ['', [Validators.required, Validators.maxLength(200)]],
             categoryId: ['', [Validators.required]]
         });
+
+        if (this.word) {
+            this.form.patchValue(this.word);
+        }
     }
 
     dismiss() {
         this._modalCtrl.dismiss();
     }
 
-    async createWord() {
+    async save() {
         this.pending = true;
-        await this.dataService.addWord(this.form.value);
-        this.pending = false;
+        if (this.word) {
+            await this.dataService.updateWord(this.word.id, this.form.value);
+        } else {
+            await this.dataService.addWord(this.form.value);
+        }
+
         this.dismiss();
     }
-
 }

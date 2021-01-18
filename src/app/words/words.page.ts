@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Category, DataService, Word} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActionSheetController, ModalController} from '@ionic/angular';
 import {WordEditComponent} from './word-edit/word-edit.component';
 
@@ -83,11 +82,12 @@ export class WordsPage implements OnInit, OnDestroy {
         this.pending = false;
     }
 
-    async openCreateWordModal() {
+    async openEditWordModal(word?: Word) {
         const modal = await this.modalCtrl.create({
             component: WordEditComponent,
             componentProps: {
-                categories: this.categories
+                categories: this.categories,
+                word
             }
         });
 
