@@ -80,7 +80,7 @@
                         <ion-icon name="create"></ion-icon>
                     </ion-button>
 
-                    <ng-container *ngIf="categories">
+                    <ng-container *ngIf="isCategoriesVisible">
                         <ion-select [(ngModel)]="word.categoryId"  class="list-select" placeholder="Select category">
                             <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
                         </ion-select>

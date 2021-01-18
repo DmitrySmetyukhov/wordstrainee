@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Category, DataService, Word} from '../shared/services/data.service';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -7,7 +7,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
     selector: 'app-words',
     templateUrl: './words.page.html',
     styleUrls: ['./words.page.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WordsPage implements OnInit, OnDestroy {
     expanded = true;
@@ -15,6 +14,7 @@ export class WordsPage implements OnInit, OnDestroy {
     words: Word[] = [];
     form: FormGroup;
     pending = false;
+    isCategoriesVisible = false;
     private _subscription = new Subscription();
 
     constructor(
@@ -36,6 +36,10 @@ export class WordsPage implements OnInit, OnDestroy {
         this._subscription.add(this.dataService.categories$.subscribe(
             list => {
                 this.categories = list;
+
+                setTimeout(() => {
+                    this.isCategoriesVisible = true;
+                }, 500);
             }
         ));
     }
@@ -52,5 +56,6 @@ export class WordsPage implements OnInit, OnDestroy {
         this.pending = true;
         await this.dataService.addWord(this.form.value);
         this.pending = false;
+        this.form.reset();
     }
 }
