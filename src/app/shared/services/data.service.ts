@@ -9,7 +9,7 @@ export interface Category {
 }
 
 export interface Word {
-    id: string;
+    id?: string;
     categoryId: string;
     origin: string;
     translation: string;

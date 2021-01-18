@@ -29,6 +29,7 @@ export class WordEditComponent implements OnInit {
         });
 
         if (this.word) {
+            console.log(this.word, 'word');
             this.form.patchValue(this.word);
         }
     }
@@ -39,10 +40,16 @@ export class WordEditComponent implements OnInit {
 
     async save() {
         this.pending = true;
+        const dto: Word = {
+            origin: this.form.get('origin').value.replace(/(\r\n|\n|\r)/gm, ' ').replace(/  +/g, ' ').trim().toLowerCase(),
+            translation: this.form.get('translation').value.replace(/(\r\n|\n|\r)/gm, ' ').replace(/  +/g, ' ').trim().toLowerCase(),
+            categoryId: this.form.get('categoryId').value
+        };
+
         if (this.word) {
-            await this.dataService.updateWord(this.word.id, this.form.value);
+            await this.dataService.updateWord(this.word.id, dto);
         } else {
-            await this.dataService.addWord(this.form.value);
+            await this.dataService.addWord(dto);
         }
 
         this.dismiss();
