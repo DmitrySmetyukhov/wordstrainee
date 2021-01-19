@@ -56,6 +56,10 @@ export class DataService {
             )
 
             .subscribe();
+
+        firestore.collection('users').doc('ds').collection('categories').snapshotChanges().subscribe(snap => {
+            console.log(snap, 'snap');
+        });
     }
 
     public get words$() {
