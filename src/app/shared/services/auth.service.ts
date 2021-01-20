@@ -31,8 +31,7 @@ export class AuthService {
     authLogin(provider) {
         return this._afAuth
             .signInWithPopup(provider)
-            .then((result) => {
-                // this._user.next(result.user);
+            .then(() => {
                 this.router.navigateByUrl('');
             })
             .catch((error) => {

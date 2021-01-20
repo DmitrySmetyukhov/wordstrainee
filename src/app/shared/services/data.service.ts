@@ -46,15 +46,7 @@ export class DataService {
 
     public get words$() {
         return this._words.asObservable().pipe(
-            map((snapshot) => {
-                return snapshot.map(item => {
-                    const data: any = item.payload.doc.data();
-                    return {
-                        id: item.payload.doc.id,
-                        ...data
-                    };
-                });
-            }),
+            map((snapshot) => this._transform(snapshot)),
             map(list => {
                 return list.map(item => {
                     return {...item};
@@ -64,15 +56,7 @@ export class DataService {
 
     public get categories$() {
         return this._categories.asObservable().pipe(
-            map((snapshot) => {
-                return snapshot.map(item => {
-                    const data: any = item.payload.doc.data();
-                    return {
-                        id: item.payload.doc.id,
-                        ...data
-                    };
-                });
-            }),
+            map((snapshot) => this._transform(snapshot)),
             map(list => {
                 return list.map(item => {
                     return {...item};
@@ -102,5 +86,15 @@ export class DataService {
 
     public updateWord(id: string, update: Word) {
         return this.firestore.collection('users').doc(this._user.uid).collection('words').doc(id).set(update);
+    }
+
+    private _transform(snapshot) {
+        return snapshot.map(item => {
+            const data: any = item.payload.doc.data();
+            return {
+                id: item.payload.doc.id,
+                ...data
+            };
+        });
     }
 }
