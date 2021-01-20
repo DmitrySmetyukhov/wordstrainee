@@ -38,4 +38,9 @@ export class AuthService {
                 console.log(error, 'err**');
             });
     }
+
+    async logout() {
+        await this._afAuth.signOut();
+        this.router.navigateByUrl('login');
+    }
 }

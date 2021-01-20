@@ -1,6 +1,9 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>Main</ion-title>
+        <ion-title>{{userName}}</ion-title>
+        <ion-button (click)="logout()" slot="end" color="danger" size="small">
+            <ion-icon name="log-out"></ion-icon>
+        </ion-button>
     </ion-toolbar>
 </ion-header>
 
@@ -33,8 +36,8 @@
 
             <ion-item class="ion-padding-top">
                 <ion-button color="secondary">
-                  <ion-icon name="sync" slot="start"></ion-icon>
-                  Rotate
+                    <ion-icon name="sync" slot="start"></ion-icon>
+                    Rotate
                 </ion-button>
                 <ion-button color="light">
                     <ion-icon name="arrow-forward" slot="end"></ion-icon>
