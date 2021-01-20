@@ -9,45 +9,40 @@
 
 <ion-content>
     <ion-card class="page-card">
-        <div class="page-card__category-select">
-            <ion-item>
-                <ion-label>Category</ion-label>
-                <ion-select [(ngModel)]="test">
-                    <ion-select-option value="nes">NES</ion-select-option>
-                    <ion-select-option value="n64">Nintendo64</ion-select-option>
-                    <ion-select-option value="nes">NES</ion-select-option>
-                    <ion-select-option value="nes">NES</ion-select-option>
-                    <ion-select-option value="nes">NES</ion-select-option>
-                    <ion-select-option value="n64">Nintendo64</ion-select-option>
-                    <ion-select-option value="nes">NES</ion-select-option>
-                    <ion-select-option value="nes">NES</ion-select-option>
-                </ion-select>
-            </ion-item>
-        </div>
+        <ion-item lines="none" class="page-card__category-select">
+            <ion-label>Category</ion-label>
+            <ion-select [(ngModel)]="selectedCategoryId" (ngModelChange)="filterAction()" class="page-card__category-select">
+                <ion-select-option *ngFor="let category of categories"
+                                   [value]="category.id">{{category.name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
 
-        <div class="page-card__words-block">
-            <ion-item class="ion-padding-top">
-                это текст-"рыба", часто используемый в печати и вэб-дизайне. но и перешагнул в электронный дизайн.
-            </ion-item>
 
-            <ion-item>
-                <ion-input placeholder="Translation" type="text" value=""></ion-input>
-            </ion-item>
+        <ion-item class="ion-padding-top">
+            <ng-container *ngIf="!isRotated; else rotatedTemplate">{{activeWord?.origin}}</ng-container>
+            <ng-template #rotatedTemplate>{{activeWord?.translation}}</ng-template>
+        </ion-item>
 
-            <ion-item class="ion-padding-top">
-                <ion-button color="secondary">
-                    <ion-icon name="sync" slot="start"></ion-icon>
-                    Rotate
-                </ion-button>
-                <ion-button color="light">
-                    <ion-icon name="arrow-forward" slot="end"></ion-icon>
-                    Next
-                </ion-button>
-                <ion-button slot="end">
-                    <ion-icon name="checkmark" slot="start"></ion-icon>
-                    Check
-                </ion-button>
-            </ion-item>
-        </div>
+        <ion-item>
+            <ion-input [(ngModel)]="enteredValue"
+                       (keyup.enter)="check()"
+                    placeholder="Translation" type="text"
+            ></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-padding-top" lines="none">
+            <ion-button (click)="rotate()" color="secondary">
+                <ion-icon name="sync" slot="start"></ion-icon>
+                Rotate
+            </ion-button>
+            <ion-button (click)="next()" color="light">
+                <ion-icon name="arrow-forward" slot="end"></ion-icon>
+                Next
+            </ion-button>
+            <ion-button (click)="check()" slot="end">
+                <ion-icon name="checkmark" slot="start"></ion-icon>
+                Check
+            </ion-button>
+        </ion-item>
     </ion-card>
 </ion-content>
