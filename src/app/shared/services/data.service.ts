@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {BehaviorSubject} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {AuthService} from './auth.service';
 
 export interface Category {
     id?: string;
@@ -21,49 +22,39 @@ export interface Word {
 export class DataService {
     private _words: BehaviorSubject<any> = new BehaviorSubject<any>([]);
     private _categories: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+    private _user;
 
-    constructor(private firestore: AngularFirestore) {
-        firestore.collection('words').snapshotChanges()
-            .pipe(
-                tap(snapshot => {
-                    const transformedData: any[] = snapshot.map(item => {
-                        const data: any = item.payload.doc.data();
-                        return {
-                            id: item.payload.doc.id,
-                            ...data
-                        };
-                    });
-
-                    this._words.next(transformedData);
-                })
-            )
-
-            .subscribe();
-
-        firestore.collection('categories').snapshotChanges()
-            .pipe(
-                tap(snapshot => {
-                    const transformedData: any[] = snapshot.map(item => {
-                        const data: any = item.payload.doc.data();
-                        return {
-                            id: item.payload.doc.id,
-                            ...data
-                        };
-                    });
-
-                    this._categories.next(transformedData);
-                })
-            )
-
-            .subscribe();
-
-        firestore.collection('users').doc('ds').collection('categories').snapshotChanges().subscribe(snap => {
-            console.log(snap, 'snap');
-        });
+    constructor(
+        private firestore: AngularFirestore,
+        private _authService: AuthService
+    ) {
+        this._authService.user$.pipe(
+            tap(userInfo => {
+                this._user = userInfo;
+                if (!userInfo) {
+                    this._categories.next([]);
+                    this._words.next([]);
+                }
+            }),
+            filter(x => !!x),
+            switchMap(() => firestore.collection('users').doc(this._user.uid).collection('categories').snapshotChanges()),
+            tap(snapshot => this._categories.next(snapshot)),
+            switchMap(() => firestore.collection('users').doc(this._user.uid).collection('words').snapshotChanges()),
+            tap((snap) => this._words.next(snap))
+        ).subscribe();
     }
 
     public get words$() {
         return this._words.asObservable().pipe(
+            map((snapshot) => {
+                return snapshot.map(item => {
+                    const data: any = item.payload.doc.data();
+                    return {
+                        id: item.payload.doc.id,
+                        ...data
+                    };
+                });
+            }),
             map(list => {
                 return list.map(item => {
                     return {...item};
@@ -73,6 +64,15 @@ export class DataService {
 
     public get categories$() {
         return this._categories.asObservable().pipe(
+            map((snapshot) => {
+                return snapshot.map(item => {
+                    const data: any = item.payload.doc.data();
+                    return {
+                        id: item.payload.doc.id,
+                        ...data
+                    };
+                });
+            }),
             map(list => {
                 return list.map(item => {
                     return {...item};
@@ -81,26 +81,26 @@ export class DataService {
     }
 
     public addCategory(category: Category) {
-        return this.firestore.collection('categories').add(category);
+        return this.firestore.collection('users').doc(this._user.uid).collection('categories').add(category);
     }
 
     public updateCategory(id: string, update: Category) {
-        return this.firestore.collection('categories').doc(id).set(update);
+        return this.firestore.collection('users').doc(this._user.uid).collection('categories').doc(id).set(update);
     }
 
     public deleteCategory(id: string) {
-        return this.firestore.collection('categories').doc(id).delete();
+        return this.firestore.collection('users').doc(this._user.uid).collection('categories').doc(id).delete();
     }
 
     public addWord(word: Word) {
-        return this.firestore.collection('words').add(word);
+        return this.firestore.collection('users').doc(this._user.uid).collection('words').add(word);
     }
 
     public deleteWord(id: string) {
-        return this.firestore.collection('words').doc(id).delete();
+        return this.firestore.collection('users').doc(this._user.uid).collection('words').doc(id).delete();
     }
 
     public updateWord(id: string, update: Word) {
-        return this.firestore.collection('words').doc(id).set(update);
+        return this.firestore.collection('users').doc(this._user.uid).collection('words').doc(id).set(update);
     }
 }

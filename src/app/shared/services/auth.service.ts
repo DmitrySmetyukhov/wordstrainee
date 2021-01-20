@@ -14,6 +14,14 @@ export class AuthService {
         private _afAuth: AngularFireAuth,
         private router: Router
     ) {
+        _afAuth.authState.subscribe(userInfo => {
+            console.log(userInfo, 'userInfo');
+            this._user.next(userInfo);
+        });
+    }
+
+    get user$() {
+        return this._user.asObservable();
     }
 
     facebookAuth() {
@@ -24,7 +32,7 @@ export class AuthService {
         return this._afAuth
             .signInWithPopup(provider)
             .then((result) => {
-                console.log(result, 'res');
+                // this._user.next(result.user);
                 this.router.navigateByUrl('');
             })
             .catch((error) => {
