@@ -49,6 +49,10 @@ export class CategoryEditComponent implements OnInit {
     }
 
     async save() {
+        if (this.form.invalid) {
+            return;
+        }
+
         if (this.categories.find(category => category.name === this.name.value)) {
             return this._presentToast();
         }

@@ -15,7 +15,10 @@
 
 
         <ion-item class="ion-margin-bottom">
-            <ion-input formControlName="name" placeholder="Enter category name"></ion-input>
+            <ion-input formControlName="name"
+                       (keyup.enter)="save()"
+                       placeholder="Enter category name"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
