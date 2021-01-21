@@ -17,6 +17,7 @@ export class MainPage implements OnInit, OnDestroy {
     activeWord: Word;
     enteredValue = '';
     isRotated = false;
+    isError = false;
     private _subscription = new Subscription();
     private _words: Word[];
     private _prevActiveWordId = '';
@@ -51,14 +52,14 @@ export class MainPage implements OnInit, OnDestroy {
 
     check() {
         const enteredValue = this.enteredValue.replace(/(\r\n|\n|\r)/gm, ' ').replace(/  +/g, ' ').trim().toLowerCase();
-        let error;
+
         if (!this.isRotated) {
-            error = enteredValue !== this.activeWord.translation;
+            this.isError = enteredValue !== this.activeWord.translation;
         } else {
-            error = enteredValue !== this.activeWord.origin;
+            this.isError = enteredValue !== this.activeWord.origin;
         }
 
-        if (!error) {
+        if (!this.isError) {
             const wordToRemove = this.filteredWords.find(word => word.id === this.activeWord.id);
             this.filteredWords.splice(this.filteredWords.indexOf(wordToRemove), 1);
             this.enteredValue = '';
@@ -70,6 +71,17 @@ export class MainPage implements OnInit, OnDestroy {
 
             return;
         }
+
+        if (!this.filteredWords.length) {
+            this.filterAction();
+        }
+
+        this.next();
+    }
+
+    onNext() {
+        const wordToRemove = this.filteredWords.find(word => word.id === this.activeWord.id);
+        this.filteredWords.splice(this.filteredWords.indexOf(wordToRemove), 1);
 
         if (!this.filteredWords.length) {
             this.filterAction();
@@ -90,6 +102,8 @@ export class MainPage implements OnInit, OnDestroy {
         this.activeWord = this.filteredWords[index];
         this._prevActiveWordId = this.activeWord?.id;
         this._lastActiveWordId = this.filteredWords[index]?.id;
+        this.isError = false;
+        this.enteredValue = '';
     }
 
     rotate() {

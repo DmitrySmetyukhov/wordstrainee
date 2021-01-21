@@ -27,6 +27,7 @@
             <ion-input [(ngModel)]="enteredValue"
                        (keyup.enter)="check()"
                     placeholder="Translation" type="text"
+                       [class.error]="isError"
             ></ion-input>
         </ion-item>
 
@@ -35,7 +36,7 @@
                 <ion-icon name="sync" slot="start"></ion-icon>
                 Rotate
             </ion-button>
-            <ion-button (click)="next()" color="light">
+            <ion-button (click)="onNext()" color="light">
                 <ion-icon name="arrow-forward" slot="end"></ion-icon>
                 Next
             </ion-button>
