@@ -15,7 +15,6 @@ export class AuthService {
         private router: Router
     ) {
         _afAuth.authState.subscribe(userInfo => {
-            console.log(userInfo, 'userInfo');
             this._user.next(userInfo);
         });
     }

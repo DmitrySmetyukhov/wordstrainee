@@ -3,6 +3,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {BehaviorSubject} from 'rxjs';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {AuthService} from './auth.service';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 export interface Category {
     id?: string;
@@ -26,9 +27,9 @@ export class DataService {
 
     constructor(
         private firestore: AngularFirestore,
-        private _authService: AuthService
+        private _afAuth: AngularFireAuth,
     ) {
-        this._authService.user$.pipe(
+        _afAuth.authState.pipe(
             tap(userInfo => {
                 this._user = userInfo;
                 if (!userInfo) {
