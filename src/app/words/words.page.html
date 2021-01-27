@@ -26,7 +26,7 @@
                         <ion-button *ngIf="!!search.value"
                                     (click)="search.setValue('')"
                                     color="light" slot="end">
-                            <ion-icon name="close" ></ion-icon>
+                            <ion-icon name="close"></ion-icon>
                         </ion-button>
 
                         <ion-input formControlName="search" placeholder="Search"></ion-input>
@@ -45,6 +45,11 @@
                     </ion-item>
 
                     <ion-item lines="none">
+                        <ion-button (click)="onSortClick()" slot="start" color="secondary">
+                            <ion-label>Sort</ion-label>
+                            <ion-icon name="arrow-down" *ngIf="sortingDirection === SortingDirection.Desc"></ion-icon>
+                            <ion-icon name="arrow-up" *ngIf="sortingDirection === SortingDirection.Asc"></ion-icon>
+                        </ion-button>
                         <ion-button (click)="resetFilters()" slot="end" color="light">
                             <ion-icon name="close" slot="start"></ion-icon>
                             Reset filters
@@ -86,7 +91,7 @@
                     </ion-button>
 
                     <ng-container *ngIf="isCategoriesVisible">
-                        <ion-text class="ion-padding-start">Category: </ion-text>
+                        <ion-text class="ion-padding-start">Category:</ion-text>
                         <ion-select [(ngModel)]="word.categoryId" (ngModelChange)="onCategoryChange(word)"
                                     class="list-select" placeholder="Select category">
                             <ion-select-option *ngFor="let category of categories"

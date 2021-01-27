@@ -5,6 +5,10 @@ import {ActionSheetController, ModalController} from '@ionic/angular';
 import {WordEditComponent} from './word-edit/word-edit.component';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
+enum SortingDirection {
+    None, Asc, Desc
+}
+
 @Component({
     selector: 'app-words',
     templateUrl: './words.page.html',
@@ -17,6 +21,8 @@ export class WordsPage implements OnInit, OnDestroy {
     pending = false;
     isCategoriesVisible = false;
     filtersForm: FormGroup;
+    sortingDirection = SortingDirection.None;
+    SortingDirection = SortingDirection;
     private _subscription = new Subscription();
     private _words: Word[] = [];
 
@@ -68,6 +74,33 @@ export class WordsPage implements OnInit, OnDestroy {
 
     togglePanel() {
         this.expanded = !this.expanded;
+    }
+
+    onSortClick() {
+        switch (this.sortingDirection) {
+            case SortingDirection.None:
+                this.sortingDirection = SortingDirection.Desc;
+                break;
+            case SortingDirection.Desc:
+                this.sortingDirection = SortingDirection.Asc;
+                break;
+            case SortingDirection.Asc:
+                this.sortingDirection = SortingDirection.Desc;
+                break;
+        }
+
+        this._sort();
+    }
+
+    _sort() {
+        if (this.sortingDirection === SortingDirection.None) {
+            return;
+        }
+
+        this.filteredWords.sort(this._compare.bind(this));
+        if (this.sortingDirection === SortingDirection.Desc) {
+            this.filteredWords.reverse();
+        }
     }
 
     async presentActionSheet(word: Word) {
@@ -137,5 +170,15 @@ export class WordsPage implements OnInit, OnDestroy {
 
             return true;
         });
+    }
+
+    private _compare(a, b) {
+        if (a.origin < b.origin) {
+            return -1;
+        }
+        if (a.origin > b.origin) {
+            return 1;
+        }
+        return 0;
     }
 }

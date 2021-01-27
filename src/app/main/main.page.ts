@@ -110,7 +110,7 @@ export class MainPage implements OnInit, OnDestroy {
         this.isRotated = !this.isRotated;
     }
 
-    private filterAction() {
+    filterAction() {
         this.filteredWords = this._words.filter(word => word.categoryId === this.selectedCategoryId);
         this._lastActiveWordId = '';
     }
