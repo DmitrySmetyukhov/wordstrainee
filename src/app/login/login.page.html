@@ -1,30 +1,54 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-title>Login</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-card class="page-card edit-card">
-      <ion-fab vertical="center" horizontal="center">
-        <ion-button ion-fab color="tertiary"><ion-icon name="log-in"></ion-icon></ion-button>
-        <ion-fab-list side="top">
-          <ion-button (click)="fbLogin()" ion-fab><ion-icon name="logo-facebook"></ion-icon></ion-button>
-        </ion-fab-list>
+    <ion-card class="page-card edit-card" [formGroup]="form">
 
-        <ion-fab-list side="bottom">
-          <ion-button ion-fab color="secondary"><ion-icon name="logo-twitter"></ion-icon></ion-button>
-        </ion-fab-list>
+        <ion-item>
+            <ion-label position="floating">Login</ion-label>
+            <ion-input formControlName="email"></ion-input>
+        </ion-item>
 
-        <ion-fab-list side="start">
-          <ion-button ion-fab color="dark"><ion-icon name="logo-vimeo"></ion-icon></ion-button>
-        </ion-fab-list>
+        <ion-item class="ion-margin-bottom">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password" (keyup.enter)="login()"></ion-input>
+        </ion-item>
 
-        <ion-fab-list side="end">
-          <ion-button ion-fab color="danger"><ion-icon name="logo-google"></ion-icon></ion-button>
-        </ion-fab-list>
-      </ion-fab>
-  </ion-card>
+        <ion-button (click)="login()" [disabled]="pending || form.invalid" (keyup.enter)="login()" class="ion-padding-horizontal">
+            <ion-label>Login</ion-label>
+        </ion-button>
+
+        <div class="or-label-block">
+            Or enter via social account
+        </div>
+
+        <ion-fab vertical="center" horizontal="center">
+            <ion-button ion-fab color="tertiary">
+                <ion-icon name="log-in"></ion-icon>
+            </ion-button>
+            <ion-fab-list side="start">
+                <ion-button (click)="fbLogin()" ion-fab>
+                    <ion-icon name="logo-facebook"></ion-icon>
+                </ion-button>
+            </ion-fab-list>
+
+            <ion-fab-list side="bottom">
+                <ion-button ion-fab color="secondary">
+                    <ion-icon name="logo-twitter"></ion-icon>
+                </ion-button>
+            </ion-fab-list>
+
+            <ion-fab-list side="end">
+                <ion-button ion-fab color="danger">
+                    <ion-icon name="logo-google"></ion-icon>
+                </ion-button>
+            </ion-fab-list>
+        </ion-fab>
+
+    </ion-card>
 
 </ion-content>

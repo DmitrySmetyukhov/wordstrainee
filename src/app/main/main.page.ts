@@ -30,7 +30,7 @@ export class MainPage implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._subscription.add(this._authService.user$.subscribe(user => this.userName = user?.displayName));
+        this._subscription.add(this._authService.user$.subscribe(user => this.userName = user?.displayName || user?.email));
         this._subscription.add(this._dataService.categories$.subscribe(list => {
             this.categories = list;
             this.selectedCategoryId = list[0]?.id;
