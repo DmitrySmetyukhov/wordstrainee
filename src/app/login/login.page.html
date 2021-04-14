@@ -10,7 +10,7 @@
 
         <ion-item>
             <ion-label position="floating">Login</ion-label>
-            <ion-input formControlName="email"></ion-input>
+            <ion-input formControlName="email" (keyup.enter)="login()"></ion-input>
         </ion-item>
 
         <ion-item class="ion-margin-bottom">
@@ -26,7 +26,7 @@
             Or enter via social account
         </div>
 
-        <ion-fab vertical="center" horizontal="center">
+        <ion-fab vertical="bottom" horizontal="center">
             <ion-button ion-fab color="tertiary">
                 <ion-icon name="log-in"></ion-icon>
             </ion-button>
@@ -36,7 +36,7 @@
                 </ion-button>
             </ion-fab-list>
 
-            <ion-fab-list side="bottom">
+            <ion-fab-list side="top">
                 <ion-button ion-fab color="secondary">
                     <ion-icon name="logo-twitter"></ion-icon>
                 </ion-button>

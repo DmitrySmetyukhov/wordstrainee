@@ -112,7 +112,7 @@ export class MainPage implements OnInit, OnDestroy {
 
     filterAction() {
         this.filteredWords = this._words.filter(word => word.categoryId === this.selectedCategoryId);
-        this._lastActiveWordId = '';
+        this.next();
     }
 
 }

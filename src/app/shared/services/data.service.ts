@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {BehaviorSubject} from 'rxjs';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
-import {AuthService} from './auth.service';
 import {AngularFireAuth} from '@angular/fire/auth';
 
 export interface Category {
     id?: string;
     name: string;
+    createdAt?: Date;
 }
 
 export interface Word {
@@ -15,6 +15,7 @@ export interface Word {
     categoryId: string;
     origin: string;
     translation: string;
+    createdAt?: Date;
 }
 
 @Injectable({
@@ -62,10 +63,13 @@ export class DataService {
                 return list.map(item => {
                     return {...item};
                 });
-            }));
+            }),
+            map(list => this._sortItemsByDate(list))
+        );
     }
 
     public addCategory(category: Category) {
+        category.createdAt = new Date();
         return this.firestore.collection('users').doc(this._user.uid).collection('categories').add(category);
     }
 
@@ -78,6 +82,7 @@ export class DataService {
     }
 
     public addWord(word: Word) {
+        word.createdAt = new Date();
         return this.firestore.collection('users').doc(this._user.uid).collection('words').add(word);
     }
 
@@ -97,5 +102,11 @@ export class DataService {
                 ...data
             };
         });
+    }
+
+    private _sortItemsByDate(list: Category[]) {
+        return list.sort((a, b) =>
+            a.createdAt < b.createdAt ? 1 : -1
+        );
     }
 }
