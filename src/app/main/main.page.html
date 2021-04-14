@@ -36,10 +36,20 @@
                 <ion-icon name="sync" slot="start"></ion-icon>
                 Rotate
             </ion-button>
-            <ion-button (click)="onNext()" color="light">
+
+            <ion-button color="secondary"
+                        [disabled]="!activeWord"
+                        (click)="openEditWordModal(activeWord)"
+            >
+                <ion-icon name="create"></ion-icon>
+                Edit
+            </ion-button>
+
+            <ion-button (click)="onNext()" color="secondary">
                 <ion-icon name="arrow-forward" slot="end"></ion-icon>
                 Next
             </ion-button>
+
             <ion-button (click)="check()" slot="end">
                 <ion-icon name="checkmark" slot="start"></ion-icon>
                 Check

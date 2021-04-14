@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
 import {Subscription} from 'rxjs';
 import {Category, DataService, Word} from '../shared/services/data.service';
+import {WordEditComponent} from '../words/word-edit/word-edit.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
     selector: 'app-main',
@@ -25,7 +27,8 @@ export class MainPage implements OnInit, OnDestroy {
 
     constructor(
         private _authService: AuthService,
-        private _dataService: DataService
+        private _dataService: DataService,
+        private _modalCtrl: ModalController
     ) {
     }
 
@@ -113,6 +116,19 @@ export class MainPage implements OnInit, OnDestroy {
     filterAction() {
         this.filteredWords = this._words.filter(word => word.categoryId === this.selectedCategoryId);
         this.next();
+    }
+
+    async openEditWordModal(word?: Word) {
+        const modal = await this._modalCtrl.create({
+            component: WordEditComponent,
+            componentProps: {
+                categories: this.categories,
+                word,
+                words: this._words
+            }
+        });
+
+        await modal.present();
     }
 
 }
