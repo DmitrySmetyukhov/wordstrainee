@@ -24,6 +24,7 @@ export class MainPage implements OnInit, OnDestroy {
     private _words: Word[];
     private _prevActiveWordId = '';
     private _lastActiveWordId;
+    private _isEditAction: boolean;
 
     constructor(
         private _authService: AuthService,
@@ -41,7 +42,11 @@ export class MainPage implements OnInit, OnDestroy {
         this._subscription.add(this._dataService.words$.subscribe(list => {
             this._words = list;
             this.filterAction();
-            this.next();
+            if (!this._isEditAction) {
+                this.next();
+            } else {
+                this.activeWord = this.filteredWords.find(word => word.id === this.activeWord?.id);
+            }
         }));
     }
 
@@ -115,6 +120,11 @@ export class MainPage implements OnInit, OnDestroy {
 
     filterAction() {
         this.filteredWords = this._words.filter(word => word.categoryId === this.selectedCategoryId);
+        // this.next();
+    }
+
+    changeCategory() {
+        this.filterAction();
         this.next();
     }
 
@@ -127,6 +137,8 @@ export class MainPage implements OnInit, OnDestroy {
                 words: this._words
             }
         });
+
+        this._isEditAction = true;
 
         await modal.present();
     }

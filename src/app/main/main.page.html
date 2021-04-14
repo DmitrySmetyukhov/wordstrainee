@@ -11,7 +11,7 @@
     <ion-card class="page-card">
         <ion-item lines="none" class="page-card__category-select">
             <ion-label>Category</ion-label>
-            <ion-select [(ngModel)]="selectedCategoryId" (ngModelChange)="filterAction()" class="page-card__category-select">
+            <ion-select [(ngModel)]="selectedCategoryId" (ngModelChange)="changeCategory()" class="page-card__category-select">
                 <ion-select-option *ngFor="let category of categories"
                                    [value]="category.id">{{category.name}}</ion-select-option>
             </ion-select>
